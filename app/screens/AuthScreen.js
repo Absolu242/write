@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button, Image, StyleSheet, View } from "react-native"
+import { Text, Image, StyleSheet, View } from "react-native"
 import { colors } from "../config/colors"
 import logo from "../assets/Logo.png"
 import SignIn from "../components/SignIn"
@@ -25,10 +25,28 @@ export default function AuthScreen() {
 }
 
 const FormTab = ({ label, setForm }) => {
+  const active = {
+    color: colors.white,
+  }
+  const nonActive = {
+    color: colors.lightDark,
+  }
+
   return (
     <View style={styles.formTab}>
-      <Button title="Sign In" onPress={() => setForm("signIn")} />
-      <Button title="Sign Up" onPress={() => setForm("signUp")} />
+      <Text
+        //color={label === "signIn" ? colors.white : colors.darkGrey}
+        style={label === "signIn" ? active : nonActive}
+        onPress={() => setForm("signIn")}
+      >
+        Sign In{" "}
+      </Text>
+      <Text
+        style={label === "signUp" ? active : nonActive}
+        onPress={() => setForm("signUp")}
+      >
+        Sign Up
+      </Text>
     </View>
   )
 }

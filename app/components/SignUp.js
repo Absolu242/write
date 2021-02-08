@@ -1,6 +1,7 @@
 import React from "react"
 import { View, StyleSheet } from "react-native"
 import * as Yup from "yup"
+import { colors } from "../config/colors"
 import AppForm from "./form/AppForm"
 import AppFormField from "./form/AppFormField"
 import SubmitButton from "./form/SubmitButton"
@@ -52,8 +53,13 @@ export default function SignUp() {
 
 const styles = StyleSheet.create({
   indicator: {
-    backgroundColor: "red",
-    height: 3,
-    width: 20,
+    position: "absolute",
+    right: 0,
+    backgroundColor: colors.lightGrey,
+    height: 20,
+    width: 19,
+    transform: [{ rotateX: "30deg" }, { rotateZ: "45deg" }],
+    top: "-9%",
+    right: "20%",
   },
 })
