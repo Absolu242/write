@@ -1,7 +1,8 @@
 import React from "react"
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet, Text } from "react-native"
 import * as Yup from "yup"
 import { colors } from "../config/colors"
+import AppButton from "./AppButton"
 import AppForm from "./form/AppForm"
 import AppFormField from "./form/AppFormField"
 import SubmitButton from "./form/SubmitButton"
@@ -45,6 +46,31 @@ export default function SignUp() {
           placeholder="Password"
           textContentType="password"
         />
+        <View style={styles.line}>
+          <Text style={styles.lineText}>OR</Text>
+        </View>
+
+        <View style={styles.social}>
+          <AppButton
+            iconName="twitter"
+            iconColor="#55acee"
+            color="white"
+            txtcolor="lightDark"
+            size={12}
+            style={styles.socialBtn}
+            title="Continu with Twitter"
+          />
+          <AppButton
+            iconName="facebook"
+            iconColor="#3b5999"
+            color="white"
+            txtcolor="lightDark"
+            size={12}
+            style={styles.socialBtn}
+            title="Continu with facebook"
+          />
+        </View>
+
         <SubmitButton title="Sign Up" />
       </AppForm>
     </View>
@@ -59,7 +85,33 @@ const styles = StyleSheet.create({
     height: 20,
     width: 19,
     transform: [{ rotateX: "30deg" }, { rotateZ: "45deg" }],
-    top: "-9%",
+    top: "-6.5%",
     right: "20%",
+  },
+  line: {
+    position: "relative",
+    backgroundColor: colors.iconGrey,
+    height: 2,
+    marginVertical: 20,
+  },
+
+  lineText: {
+    position: "absolute",
+    padding: 10,
+    backgroundColor: colors.lightGrey,
+    color: colors.darkGrey,
+    width: 40,
+    left: "45%",
+    top: -20,
+  },
+
+  social: {
+    flexDirection: "row",
+    maxWidth: "100%",
+    justifyContent: "space-between",
+  },
+
+  socialBtn: {
+    width: "48%",
   },
 })
