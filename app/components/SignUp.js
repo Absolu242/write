@@ -1,17 +1,17 @@
-import React from "react"
-import { View, StyleSheet, Text } from "react-native"
-import * as Yup from "yup"
-import { colors } from "../config/colors"
-import AppButton from "./AppButton"
-import AppForm from "./form/AppForm"
-import AppFormField from "./form/AppFormField"
-import SubmitButton from "./form/SubmitButton"
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+import * as Yup from "yup";
+import { colors } from "../config/colors";
+import AppButton from "./AppButton";
+import AppForm from "./form/AppForm";
+import AppFormField from "./form/AppFormField";
+import SubmitButton from "./form/SubmitButton";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().min(6).label("Name"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(6).label("Password"),
-})
+});
 
 export default function SignUp() {
   return (
@@ -52,13 +52,13 @@ export default function SignUp() {
 
         <View style={styles.social}>
           <AppButton
-            iconName="twitter"
-            iconColor="#55acee"
+            iconName="google"
+            iconColor="#DB4437"
             color="white"
             txtcolor="lightDark"
             size={12}
             style={styles.socialBtn}
-            title="Continu with Twitter"
+            title="Continu with Google"
           />
           <AppButton
             iconName="facebook"
@@ -74,7 +74,7 @@ export default function SignUp() {
         <SubmitButton title="Sign Up" />
       </AppForm>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: colors.iconGrey,
     height: 2,
-    marginVertical: 20,
+    marginVertical: 18,
   },
 
   lineText: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.lightGrey,
     color: colors.darkGrey,
-    width: 40,
+    fontSize: 10,
     left: "45%",
     top: -20,
   },
@@ -114,4 +114,4 @@ const styles = StyleSheet.create({
   socialBtn: {
     width: "48%",
   },
-})
+});

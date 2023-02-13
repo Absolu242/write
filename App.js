@@ -1,17 +1,37 @@
-import { StatusBar } from "expo-status-bar"
-import React from "react"
-import { StyleSheet, Text, View } from "react-native"
-import AppTabNav from "./app/components/AppTabNav"
-import GlobalScreen from "./app/components/GloablScreen"
-import WelcomeScreen from "./app/screens/WelcomeScreen"
-import AuthScreen from "./app/screens/AuthScreen"
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import GlobalScreen from "./app/components/GloablScreen";
+import WelcomeScreen from "./app/screens/WelcomeScreen";
+import AuthScreen from "./app/screens/AuthScreen";
+import MainNavigation from "./app/navigation";
+import AppLoading from "expo-app-loading";
+import {
+  useFonts,
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_500Medium,
+  PlayfairDisplay_600SemiBold,
+  PlayfairDisplay_700Bold,
+} from "@expo-google-fonts/playfair-display";
 
 export default function App() {
-  return (
-    <GlobalScreen>
-      <AuthScreen />
-    </GlobalScreen>
-  )
+  let [fontsLoaded] = useFonts({
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_500Medium,
+    PlayfairDisplay_600SemiBold,
+    PlayfairDisplay_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <GlobalScreen>
+        <MainNavigation />
+        <StatusBar style="auto" />
+      </GlobalScreen>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -21,4 +41,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-})
+});

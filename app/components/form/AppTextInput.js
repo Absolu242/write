@@ -1,26 +1,37 @@
-import React from "react"
-import { View, StyleSheet, TextInput } from "react-native"
-import { colors } from "../../config/colors"
+import React from "react";
+import { View, StyleSheet, TextInput } from "react-native";
+import { colors } from "../../config/colors";
 
-export default function AppTextInput({ ...otherProps }) {
+export default function AppTextInput({
+  color,
+  bg,
+  textAlign,
+  textSize,
+  ...otherProps
+}) {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        { backgroundColor: bg !== "" ? bg : colors.white },
+        styles.container,
+      ]}
+    >
       <TextInput
-        placeholderTextColor={colors.lightGrey}
-        style={colors.black}
+        placeholderTextColor={color || colors.lightGrey}
         {...otherProps}
         style={{
-          position: "relative",
           width: "100%",
+          textAlign,
+          color,
+          fontSize: 13,
         }}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     borderRadius: 3,
     flexDirection: "row",
     width: "100%",
@@ -28,4 +39,4 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: "center",
   },
-})
+});

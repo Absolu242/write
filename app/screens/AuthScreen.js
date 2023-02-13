@@ -1,16 +1,25 @@
-import React, { useState } from "react"
-import { Text, Image, StyleSheet, View } from "react-native"
-import { colors } from "../config/colors"
-import logo from "../assets/Logo.png"
-import SignIn from "../components/SignIn"
-import SignUp from "../components/SignUp"
+import React, { useState } from "react";
+import { Text, Image, StyleSheet, View } from "react-native";
+import { colors } from "../config/colors";
+import logo from "../assets/Logo.png";
+import SignIn from "../components/SignIn";
+import SignUp from "../components/SignUp";
 
 //import Svg, { Path } from "react-native-svg"
 export default function AuthScreen() {
-  const [whichForm, setWhichForm] = useState("signIn")
+  const [whichForm, setWhichForm] = useState("signIn");
 
   return (
     <View style={styles.container}>
+      <View style={styles.logo}>
+        <Image
+          source={require("../assets/Logo.png")}
+          style={{
+            width: 112.76,
+            height: 29.47,
+          }}
+        />
+      </View>
       {/* <View style={styles.logo}>
         <Svg
           width={76}
@@ -33,16 +42,16 @@ export default function AuthScreen() {
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const FormTab = ({ label, setForm }) => {
   const active = {
     color: colors.white,
-  }
+  };
   const nonActive = {
     color: colors.lightDark,
-  }
+  };
 
   return (
     <View style={styles.formTab}>
@@ -60,8 +69,8 @@ const FormTab = ({ label, setForm }) => {
         Sign Up
       </Text>
     </View>
-  )
-}
+  );
+};
 
 const FormContent = ({ label }) => {
   switch (label) {
@@ -70,20 +79,20 @@ const FormContent = ({ label }) => {
         <>
           <SignIn />
         </>
-      )
-      break
+      );
+      break;
 
     case "signUp":
       return (
         <>
           <SignUp />
         </>
-      )
-      break
+      );
+      break;
     default:
-      break
+      break;
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -121,4 +130,4 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 20,
   },
-})
+});
