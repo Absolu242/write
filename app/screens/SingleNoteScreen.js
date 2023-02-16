@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import {
   SafeAreaView,
@@ -12,19 +13,67 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import QuillEditor, { QuillToolbar } from "react-native-cn-quill";
+import { useDispatch } from "react-redux";
+import { pageCount } from "../helper/pageCount";
+import { WordCount } from "../helper/wordCount";
+import { updateNote } from "../redux/noteSlice";
+import json from "../data/db.json";
+import NoteServices from "../services/NoteServices";
 
-export default function SingleNoteScreen({ navigation }) {
-  const _editor = React.createRef();
-  const [mode, setMode] = useState("read");
-  const [disabled, setDisabled] = useState(false);
-
+//function starts
+export default function SingleNoteScreen({ navigation, route }) {
+  //params
+  const { id } = route.params;
   const focusedHeight = Dimensions.get("window").height - 435;
   const initialHeight = Dimensions.get("window").height - 195;
+  const _editor = React.createRef();
+
+  //temporary solution, MUST REMOVE
+  let objCount = json.notes.length;
+
+  let currentNote = null;
+  for (let x = 0; x < objCount; x++) {
+    let curitem = json.notes[x];
+    if (curitem.id === id) {
+      currentNote = curitem;
+    }
+  }
+
+  //hooks
+  const [mode, setMode] = useState("read");
+  const [disabled, setDisabled] = useState(false);
   const [writing, setWriting] = useState("");
+  const [writingHtml, setWritingHtml] = useState(
+    currentNote?.body || "<h1>Title</h1>"
+  );
+  const dispatch = useDispatch();
 
-  //   console.log(writing);
+  //getting the first words of the note
+  const parts = writingHtml.split("</");
+  const titleSpliting = parts[0].split(">")[1];
+  let resultTitle =
+    titleSpliting === undefined
+      ? ""
+      : titleSpliting.substring(0, 19);
 
-  console.log(disabled);
+  //handlers
+
+  const data = {
+    id,
+    title: resultTitle,
+    pages: pageCount(WordCount(writingHtml)),
+    createdAt: currentNote?.createdAt || "",
+    body: writingHtml,
+  };
+
+  const saveNote = () => {
+    if (resultTitle !== "") {
+      dispatch(updateNote({ id, data }));
+    } else {
+      console.log("please write something");
+    }
+  };
+
   return (
     <View
       style={{
@@ -41,11 +90,12 @@ export default function SingleNoteScreen({ navigation }) {
               justifyContent: "space-between",
               alignItems: "baseline",
               paddingTop: 20,
-              paddingHorizontal: 30,
+              paddingHorizontal: 15,
             }}
           >
             <TouchableOpacity
               onPress={() => {
+                saveNote();
                 _editor.current?.enable(!disabled);
                 setMode("read");
                 setDisabled(!disabled);
@@ -88,10 +138,14 @@ export default function SingleNoteScreen({ navigation }) {
               justifyContent: "space-between",
               alignItems: "baseline",
               paddingTop: 20,
-              paddingHorizontal: 30,
+              paddingHorizontal: 15,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
               <Image source={require("../assets/Back.png")} />
             </TouchableOpacity>
 
@@ -113,7 +167,6 @@ export default function SingleNoteScreen({ navigation }) {
           </View>
         </>
       )}
-      {mode === "edit" ? <></> : <></>}
 
       {mode === "edit" ? (
         <>
@@ -130,15 +183,15 @@ export default function SingleNoteScreen({ navigation }) {
               }}
               style={{
                 height: initialHeight,
-                marginHorizontal: 30,
+                marginHorizontal: 15,
                 marginTop: 20,
                 backgroundColor: "white",
                 borderRadius: 10,
               }}
               ref={_editor}
-              initialHtml={writing}
-              onTextChange={(text) => setWriting(text)}
-              onHtmlChange={({ html }) => setWriting(html)}
+              initialHtml={writingHtml}
+              onTextChange={(text) => console.log(text)}
+              onHtmlChange={({ html }) => setWritingHtml(html)}
             />
 
             <QuillToolbar
@@ -162,6 +215,7 @@ export default function SingleNoteScreen({ navigation }) {
             style={{
               height:
                 mode === "read" ? initialHeight : focusedHeight,
+              backgroundColor: "red",
             }}
           >
             <QuillEditor
@@ -170,15 +224,15 @@ export default function SingleNoteScreen({ navigation }) {
               }}
               style={{
                 height: initialHeight,
-                marginHorizontal: 30,
+                marginHorizontal: 15,
                 marginTop: 20,
                 backgroundColor: "white",
                 borderRadius: 10,
               }}
               ref={_editor}
-              initialHtml={writing}
+              initialHtml={writingHtml}
               onTextChange={(text) => setWriting(text)}
-              onHtmlChange={({ html }) => setWriting(html)}
+              onHtmlChange={({ html }) => setWritingHtml(html)}
             />
 
             <QuillToolbar
@@ -189,45 +243,6 @@ export default function SingleNoteScreen({ navigation }) {
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       )}
-
-      {/* <TouchableWithoutFeedback
-        onPress={() => {
-          _editor.current?.enable(!disabled);
-          _editor.current?.focus();
-          setDisabled(!disabled);
-          setMode("edit");
-        }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{
-            height: mode === "read" ? initialHeight : focusedHeight,
-          }}
-        >
-          <QuillEditor
-            webview={{
-              nestedScrollEnabled: true,
-            }}
-            style={{
-              height: initialHeight,
-              marginHorizontal: 30,
-              marginTop: 20,
-              backgroundColor: "white",
-              borderRadius: 10,
-            }}
-            ref={_editor}
-            initialHtml={writing}
-            onTextChange={(text) => setWriting(text)}
-            onHtmlChange={({ html }) => setWriting(html)}
-          />
-
-          <QuillToolbar
-            editor={_editor}
-            options="full"
-            theme="light"
-          />
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback> */}
     </View>
   );
 }

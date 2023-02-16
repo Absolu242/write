@@ -8,13 +8,21 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import NoteCard from "../components/NoteCard";
-import searchFilterHook from "../../helper/searchFilterHook";
+import searchFilterHook from "../helper/searchFilterHook";
 
 export default function ReadModeScreen({ navigation }) {
-  const [search, searchFilterFunction, filteredDataSource] =
-    searchFilterHook();
+  const [
+    refreshing,
+    search,
+    onRefresh,
+    searchFilterFunction,
+    filteredDataSource,
+  ] = searchFilterHook();
+
+  console.log("ReadModeScreen", filteredDataSource);
 
   return (
     <View
@@ -69,6 +77,12 @@ export default function ReadModeScreen({ navigation }) {
           justifyContent: "space-between",
           flexWrap: "wrap",
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       >
         {filteredDataSource.map((note) => (
           <NoteCard

@@ -1,0 +1,25 @@
+{
+  "notes": [
+    {
+      "id": "0cdb2daa-d682-435f-bc58-70373b1d0c8e",
+      "title": "My first note",
+      "pages": 1,
+      "createdAt": "February 16, 2023",
+      "body": "<p>My first note</p>"
+    },
+    {
+      "id": "98efbd10-6aee-4f8a-e70c-a69452aaebc6",
+      "title": "My second notes",
+      "pages": 1,
+      "createdAt": "February 16, 2023",
+      "body": "<p>My second notes</p>"
+    },
+    {
+      "id": "5b7865a8-17cd-4bea-8e97-0687c184da7d",
+      "title": "Bonjour , salut !",
+      "pages": 1,
+      "createdAt": "February 16, 2023",
+      "body": "<h1>Bonjour , salut !</h1><p>cool</p>"
+    }
+  ]
+}

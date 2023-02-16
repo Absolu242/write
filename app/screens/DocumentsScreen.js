@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -5,15 +6,44 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   TextInput,
+  RefreshControl,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import NoteCard from "../components/NoteCard";
-import searchFilterHook from "../../helper/searchFilterHook";
+import { generateUUID } from "../helper/generateUUID";
+import searchFilterHook from "../helper/searchFilterHook";
+import { createNote } from "../redux/noteSlice";
 
 export default function DocumentsScreen({ navigation }) {
-  const [search, searchFilterFunction, filteredDataSource] =
-    searchFilterHook();
+  //Current Day
+  let date = new Date().toLocaleDateString("en-EN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const initialNotedata = {
+    id: generateUUID(),
+    title: "New Note",
+    body: "",
+    pages: 1,
+    createdAt: date,
+  };
+
+  const [
+    refreshing,
+    search,
+    onRefresh,
+    searchFilterFunction,
+    filteredDataSource,
+  ] = searchFilterHook();
+
+  const dispatch = useDispatch();
+
+  const AddNote = () => {
+    dispatch(createNote(initialNotedata));
+  };
 
   return (
     <View
@@ -68,8 +98,20 @@ export default function DocumentsScreen({ navigation }) {
           justifyContent: "space-between",
           flexWrap: "wrap",
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       >
         <TouchableOpacity
+          onPress={() => {
+            AddNote(),
+              navigation.navigate("Note", {
+                id: initialNotedata.id,
+              });
+          }}
           style={{
             width: "48%",
           }}
